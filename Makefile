@@ -4,6 +4,8 @@ all: up
 
 up:
 	@mkdir -p /home/$(USER)/data/mariadb
+	@mkdir -p /home/$(USER)/data/wordpress
+# 	@mkdir -p /home/mboutte/data/wordpress
 	$(COMPOSE) up --build -d
 
 down:
