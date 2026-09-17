@@ -23,8 +23,26 @@ services:
       - wp_data:/var/www/html
     networks:
       - inception
+    depends_on:
+      - wordpress
     ports:
       - "443:443"
+    restart: on-failure
+  wordpress:
+    build:
+      context: ./requirements/wordpress
+    image: wordpress
+    container_name: wordpress
+    env_file: .env
+    secrets:
+      - db_password
+      - credentials
+    volumes:
+      - wp_data:/var/www/html
+    networks:
+      - inception
+    depends_on:
+      - mariadb
     restart: on-failure
 
 
@@ -41,6 +59,13 @@ volumes:
       type: none
       o: bind
       device: /home/${USER}/data/wordpress
+  # tmp test maybe
+  # ng_data:
+  #   driver: local
+  #   driver_opts:
+  #     type: none
+  #     o: bind
+  #     device: /home/${USER}/data/nginx
 
 networks:
   inception:

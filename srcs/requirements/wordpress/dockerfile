@@ -1,0 +1,30 @@
+FROM debian:bookworm-slim
+
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    php-fpm \
+    php-mysqli \
+    php-curl \
+    php-gd \
+    php-xml \
+    php-mbstring \
+    curl \
+    ca-certificates \
+    mariadb-client \
+    && update-ca-certificates \
+    && rm -rf /var/lib/apt/lists/*
+
+# NGINX runs in its own container, so PHP-FPM must listen on the Docker network
+# rather than Debian's default Unix socket.
+RUN sed -i 's|^listen = .*|listen = 9000|' /etc/php/8.2/fpm/pool.d/www.conf
+
+RUN curl -o /usr/local/bin/wp -sSL https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar \
+    && chmod +x /usr/local/bin/wp
+
+COPY tools/entrypoint.sh /usr/local/bin/entrypoint.sh
+RUN chmod +x /usr/local/bin/entrypoint.sh
+
+WORKDIR /var/www/html
+
+EXPOSE 9000
+
+ENTRYPOINT ["entrypoint.sh"]
