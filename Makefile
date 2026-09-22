@@ -17,12 +17,6 @@ stop:
 logs:
 	$(COMPOSE) logs -f
 
-# test just mariadb alone, without starting wordpress/nginx
-# mariadb:
-# 	mkdir -p /home/$(USER)/data/mariadb
-# 	$(COMPOSE) up --build mariadb -d
-# 	$(COMPOSE) logs -f mariadb
-
 secrets:
 	@mkdir -p secrets
 	@[ -f secrets/db_password.txt ] || openssl rand -hex 16 > secrets/db_password.txt
