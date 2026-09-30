@@ -4,7 +4,6 @@ all: up
 
 up: secrets
 	@mkdir -p /home/$(USER)/data/mariadb
-	@mkdir -p /home/$(USER)/data/nginx
 	@mkdir -p /home/$(USER)/data/wordpress
 	$(COMPOSE) up --build -d
 
@@ -24,10 +23,13 @@ secrets:
 	@[ -f secrets/credentials.txt ] || printf "WP_ADMIN_USER=user_%s\nWP_ADMIN_PASSWORD=%s\nWP_USER=editor_%s\nWP_USER_PASSWORD=%s\n" \
 		"$$(openssl rand -hex 3)" "$$(openssl rand -hex 16)" \
 		"$$(openssl rand -hex 3)" "$$(openssl rand -hex 16)" > secrets/credentials.txt
+
 clean: down
 	docker system prune -af
 
-fclean: clean
+fclean: clean down
+	sudo rm -rf ~/data/*
+	rm -rf secrets
 	docker volume rm srcs_db_data srcs_wp_data 2>/dev/null || true
 	docker network rm srcs_inception 2>/dev/null || true
 

@@ -13,6 +13,7 @@ services:
     networks:
       - inception
     restart: on-failure
+
   nginx:
     build:
       context: ./requirements/nginx
@@ -28,6 +29,7 @@ services:
     ports:
       - "443:443"
     restart: on-failure
+
   wordpress:
     build:
       context: ./requirements/wordpress
@@ -59,17 +61,12 @@ volumes:
       type: none
       o: bind
       device: /home/${USER}/data/wordpress
-  # tmp test maybe
-  # ng_data:
-  #   driver: local
-  #   driver_opts:
-  #     type: none
-  #     o: bind
-  #     device: /home/${USER}/data/nginx
+
 
 networks:
   inception:
     driver: bridge
+
 
 secrets:
   db_password:
