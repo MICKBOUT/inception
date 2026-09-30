@@ -1,0 +1,17 @@
+FROM debian:bookworm-slim
+
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    ca-certificates \
+    curl \
+    php-cli \
+    php-mysqli \
+    && rm -rf /var/lib/apt/lists/*
+
+WORKDIR /var/www/html
+
+RUN curl -fsSL https://www.adminer.org/latest.php -o adminer.php
+COPY index.php /var/www/html/index.php
+
+EXPOSE 8080
+
+CMD ["php", "-S", "0.0.0.0:8080", "-t", "/var/www/html"]

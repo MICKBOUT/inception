@@ -13,3 +13,12 @@ docker
   exec -it mariadb \                                                  
   mysql -u root -p"$(cat secrets/db_root_password.txt)" \
   -e "SHOW DATABASES;"
+
+
+adminer
+Open Adminer at http://localhost:8080 and use:
+- System: MySQL
+- Server: mariadb
+- Username: wp_user
+- Password: the contents of secrets/db_password.txt
+- Database: wordpress
