@@ -1,6 +1,10 @@
 #!/bin/bash
 set -e
 
+# The bind-mounted WordPress directory may have been created by the host user
+# (or left owned by nobody). PHP-FPM runs as www-data and needs to write here.
+chown -R www-data:www-data /var/www/html
+
 DB_PASSWORD=$(cat /run/secrets/db_password)
 WP_ADMIN_USER=$(grep WP_ADMIN_USER /run/secrets/credentials | cut -d= -f2)
 WP_ADMIN_PASSWORD=$(grep WP_ADMIN_PASSWORD /run/secrets/credentials | cut -d= -f2)
@@ -49,6 +53,7 @@ wp config set WP_REDIS_DATABASE 0 --raw --allow-root
 wp config set WP_REDIS_TIMEOUT 1 --raw --allow-root
 wp config set WP_REDIS_READ_TIMEOUT 1 --raw --allow-root
 wp config set WP_CACHE true --raw --allow-root
+wp config set FS_METHOD direct --allow-root
 echo "Redis Cache has beed configured"
 
 if ! wp plugin is-installed redis-cache --allow-root; then
@@ -61,6 +66,8 @@ fi
 wp plugin activate redis-cache --allow-root 2>/dev/null || true
 
 wp redis enable --allow-root || echo "Failed to enable Redis"
+
+chown -R www-data:www-data /var/www/html
 
 echo "[entrypoint] Starting php-fpm..."
 exec php-fpm8.2 -F

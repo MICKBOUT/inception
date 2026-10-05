@@ -68,6 +68,8 @@ services:
       context: ./requirements/bonus/redis
     image: redis
     container_name: redis
+    volumes:
+      - rds_data:/data
     restart: on-failure
     networks:
       - inception
