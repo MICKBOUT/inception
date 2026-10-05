@@ -71,6 +71,19 @@ services:
     restart: on-failure
     networks:
       - inception
+    ports:
+      - "6379:6379"
+
+  website:
+    build:
+      context: ./requirements/bonus/website
+    image: website
+    container_name: website
+    restart: on-failure
+    networks:
+      - inception
+    ports:
+      - "4242:4242"
 
 
 volumes:
