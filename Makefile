@@ -5,6 +5,7 @@ all: up
 up: secrets
 	@mkdir -p /home/$(USER)/data/mariadb
 	@mkdir -p /home/$(USER)/data/wordpress
+	@mkdir -p /home/$(USER)/data/redis
 	$(COMPOSE) up --build -d
 
 down:
@@ -27,7 +28,7 @@ secrets:
 clean: down
 	docker system prune -af
 
-fclean: clean down
+fclean: clean
 	sudo rm -rf ~/data/*
 	rm -rf secrets
 	docker volume rm srcs_db_data srcs_wp_data 2>/dev/null || true

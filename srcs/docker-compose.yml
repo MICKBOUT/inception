@@ -45,23 +45,33 @@ services:
       - inception
     depends_on:
       - mariadb
+      - redis
     restart: on-failure
 
   adminer:
     build:
       context: ./requirements/bonus/adminer
-      dockerfile: dockerfile
     image: adminer
     container_name: adminer
     environment:
       ADMINER_DEFAULT_SERVER: mariadb
-    restart: always
+    restart: on-failure
     ports:
       - "8080:8080"
     networks:
       - inception
     depends_on:
       - mariadb
+
+  redis:
+    build:
+      context: ./requirements/bonus/redis
+    image: redis
+    container_name: redis
+    restart: on-failure
+    networks:
+      - inception
+
 
 volumes:
   db_data:
@@ -76,6 +86,12 @@ volumes:
       type: none
       o: bind
       device: /home/${USER}/data/wordpress
+  rds_data:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: /home/${USER}/data/redis
 
 
 networks:
