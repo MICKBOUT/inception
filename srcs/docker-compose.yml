@@ -107,6 +107,25 @@ services:
       - wordpress
     restart: on-failure
 
+  netdata:
+      build: 
+        context: ./requirements/bonus/netdata
+      image: netdata
+      container_name: netdata
+      cap_add:
+          - SYS_PTRACE
+      volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - /proc:/host/proc:ro
+      - /sys:/host/sys:ro
+      - /etc/os-release:/host/etc/os-release:ro
+      pid: host
+      networks:
+        - inception
+      ports:
+          - "19999:19999"
+      restart: on-failure
+
 
 volumes:
   db_data:
@@ -127,6 +146,9 @@ volumes:
       type: none
       o: bind
       device: /home/${USER}/data/redis
+  netdataconfig:
+  netdatalib:
+  netdatacache:
 
 
 networks:
