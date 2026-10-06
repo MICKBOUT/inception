@@ -87,6 +87,26 @@ services:
     ports:
       - "4242:4242"
 
+  ftp:
+    build:
+      context: ./requirements/bonus/ftp
+    image: ftp
+    container_name: ftp
+    environment:
+      FTP_PASV_ADDRESS: ${FTP_PASV_ADDRESS:-127.0.0.1}
+    volumes:
+      - wp_data:/var/www/html
+    secrets:
+      - ftp_password
+    networks:
+      - inception
+    ports:
+      - "21:21"
+      - "30000-30009:30000-30009"
+    depends_on:
+      - wordpress
+    restart: on-failure
+
 
 volumes:
   db_data:
@@ -121,3 +141,5 @@ secrets:
     file: ../secrets/db_root_password.txt
   credentials:
     file: ../secrets/credentials.txt
+  ftp_password:
+    file: ../secrets/ftp_password.txt

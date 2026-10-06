@@ -24,6 +24,7 @@ secrets:
 	@[ -f secrets/credentials.txt ] || printf "WP_ADMIN_USER=user_%s\nWP_ADMIN_PASSWORD=%s\nWP_USER=editor_%s\nWP_USER_PASSWORD=%s\n" \
 		"$$(openssl rand -hex 3)" "$$(openssl rand -hex 16)" \
 		"$$(openssl rand -hex 3)" "$$(openssl rand -hex 16)" > secrets/credentials.txt
+	@[ -f secrets/ftp_password.txt ] || openssl rand -hex 16 > secrets/ftp_password.txt
 
 clean: down
 	docker system prune -af
