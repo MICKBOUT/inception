@@ -32,8 +32,7 @@ clean: down
 fclean: clean
 	sudo rm -rf ~/data/*
 	rm -rf secrets
-# 	docker volume rm srcs_db_data srcs_wp_data 2>/dev/null || true
-	docker volume rm $(docker volume ls -q) || true
+	docker volume rm $(shell docker volume ls -q) 2>/dev/null || true
 	docker network rm srcs_inception 2>/dev/null || true
 
 re: fclean up
