@@ -43,6 +43,25 @@ Adminer is available at `http://localhost:8080`. Select **MySQL** as the system,
 
 The static bonus page is served at `http://localhost:4242`. Netdata is at `http://localhost:19999`. Both use HTTP.
 
+## Mariadb database
+
+There are multiple way to acces the mariadb database, the first one is my using `docker exec -it mariadb`. For exemple, the following command allow you to see the table in the database:
+```sh
+docker exec -it mariadb mysql -u root -p"$(cat secrets/db_root_password.txt)" -e "SHOW DATABASES;"
+``` 
+You can also acces it by using adminer on [localhost:8080](http://localhost:8080/) with:
+- server: `mariadb`
+- username: `wp_user`
+- password: `db_root_password`
+- database: `wordpress`
+
+## Netdata
+
+Netdata allow you to monitor the vm via a simple website, you can see the site at [localhost:19999](http://localhost:19999).
+
+## Website
+My website is accesible at [localhost:4242](http://localhost:4242).
+
 ## Credentials
 
 The Makefile creates these files under the repository's root `secrets/` directory if they do not already exist:
@@ -52,8 +71,10 @@ The Makefile creates these files under the repository's root `secrets/` director
 - `db_root_password.txt`: MariaDB root password.
 - `ftp_password.txt`: password for the FTP account.
 
-The FTP username is `www-data`; it accesses the shared WordPress files. Keep the secrets directory private and do not commit or share its contents. `srcs/.env` contains non-secret settings such as the domain and database name/user.
-
+The FTP username is `www-data`; it accesses the shared WordPress files. Keep the secrets directory private and do not commit or share its contents. `srcs/.env` contains non-secret settings such as the domain and database name/user. You can use this commande to connect to the ftp serv: 
+```sh
+ftp -P 21 www-data@localhost
+```
 ## Check service health
 
 Show service status (there is no Make target for this):
