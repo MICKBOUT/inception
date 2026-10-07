@@ -89,4 +89,7 @@ See [USER_DOC.md](USER_DOC.md) for service URLs, credentials, and routine operat
 - [MariaDB documentation](https://mariadb.com/kb/en/documentation/)
 - [Redis documentation](https://redis.io/docs/latest/)
 - [Adminer](https://www.adminer.org/)
-- AI assistance was used to draft these project documents. The project maintainer has verify the instructions against the running environment and is able to explain the implementation.
+
+## Ai Usage
+
+AI assistance was used to draft these project documents. The project maintainer has verify the instructions against the running environment and is able to explain the implementation.
